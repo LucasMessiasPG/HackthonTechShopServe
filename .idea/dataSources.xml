@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" hash="3876115616">
+    <data-source source="LOCAL" name="PostgreSQL - hackthon@localhost" uuid="fe554058-7fe9-4164-baa3-221ce61952a8">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/hackthon</jdbc-url>
+    </data-source>
+  </component>
+</project>
