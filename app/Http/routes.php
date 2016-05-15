@@ -11,7 +11,8 @@
 |
 */
 
-Route::get('/s/{peaple}','ContatosController@index');
+Route::get('/','ContatosController@index');
+Route::get('/multi','WhatsAppController@multi');
 
 Route::group(['prefix'=>'/api/v1'],function(){
     Route::group(['prefix'=>'contato'],function(){
@@ -30,6 +31,6 @@ Route::group(['prefix'=>'/api/v1'],function(){
     });
 
     Route::group(['prefix'=>'message'],function(){
-        Route::post('send','WhatsAppController@send');
+        Route::post('send','WhatsAppController@enviar');
     });
 });

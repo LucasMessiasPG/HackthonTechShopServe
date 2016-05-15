@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contato;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -66,7 +67,7 @@ class WhatsAppController extends Controller
 	 * @param $target
 	 * @return bool
 	 */
-	public function send(Request $request)
+	public function enviar(Request $request)
 	{
 		try{
 			if(is_array($request->target)){
@@ -87,18 +88,49 @@ class WhatsAppController extends Controller
 		}
 	}
 
-	private function _send($target,$message)
+	public function multi()
 	{
-		require (base_path('whatsApi/src/whatsprot.class.php'));
+
+		require_once(base_path('whatsApi/src/whatsprot.class.php'));
 
 		if(!empty($this->nickname))
 			$this->nickname = 'App Tob';
 
-		$w = new \WhatsProt($this->number, $this->nickname, FALSE, FALSE);
+		$w = new \WhatsProt($this->number, $this->nickname, true, true);
 		$w->connect();
 		$w->loginWithPassword($this->password);
-		$w->sendMessage($target,$message);
+		$pessoas = Contato::all()->toArray();
+//		$pessoas[] = ['nome'=>'jonas','numero'=>'554299603082'];
+//		$pessoas[] = ['nome'=>'diego','numero'=>'554288017598'];
+//		$pessoas[] = ['nome'=>'fortes','numero'=>'554299920126'];
+//		$pessoas[] = ['nome'=>'guilhermino','numero'=>'554298424923'];
+		foreach ($pessoas as $pessoa) {
+			$msg = 'Ola '.strtoupper($pessoa['nome']).', esta mensagem é uma demostracao do aplicativo KeepSell em funcionamento';
+			$this->sendMessage($pessoa['numero'],$msg,$w);
+//			$this->_send($pessoa['numero'],$msg);
+			sleep(1);
+		}
 		$w->pollMessage();
+		echo 'fim';
+	}
+
+	private function _send($target,$message)
+	{
+		require_once(base_path('whatsApi/src/whatsprot.class.php'));
+
+		if(!empty($this->nickname))
+			$this->nickname = 'App Tob';
+
+		$w = new \WhatsProt($this->number, $this->nickname, true, true);
+		$w->connect();
+		$w->loginWithPassword($this->password);
+		$this->sendMessage($target,$message,$w);
+		$w->pollMessage();
+	}
+
+	private function sendMessage($target,$message,$w)
+	{
+		$w->sendMessage($target,$message);
 	}
 
 }

@@ -18,31 +18,35 @@ class ContatosController extends Controller
 	//jonas = 554299603082;
 	//deigo = 554288017598;
 	//afonsinho = 554298424923;
-	public function index($peaple)
+	public function index()
 	{
-		try {
+//		try {
 
-			$fb = new Facebook([
-				'app_id' => env('FACEBOOK_APP_ID'), // Replace {app-id} with your app id
-				'app_secret' => env('FACEBOOK_APP_SECRET'),
-				'default_graph_version' => 'v2.6',
-			]);
+//			$w = new WhatsAppController();
+//			$w->getCode();
+//			var_dump($w->getPassword(146540));
 
-			$helper = $fb->getRedirectLoginHelper();
-//			$response = $fb->get('/search?q='.$peaple.'&type=user&fields=id,name,picture', env('FACEBOOK_TOKEN_MESSAGE'));
-			$response = $fb->post('/me/messages',['recipient'=>['id'=>'1106531089368917'],'message'=>['text'=>'ola']],env('FACEBOOK_TOKEN_MESSAGE'));
-			dd($response);
-		} catch(\Facebook\Exceptions\FacebookSDKException $e) {
-			dd($e->getMessage());
-		}
+//			$fb = new Facebook([
+//				'app_id' => env('FACEBOOK_APP_ID'), // Replace {app-id} with your app id
+//				'app_secret' => env('FACEBOOK_APP_SECRET'),
+//				'default_graph_version' => 'v2.6',
+//			]);
+//
+//			$helper = $fb->getRedirectLoginHelper();
+////			$response = $fb->get('/search?q='.$peaple.'&type=user&fields=id,name,picture', env('FACEBOOK_TOKEN_MESSAGE'));
+//			$response = $fb->post('/me/messages',['recipient'=>['id'=>'1106531089368917'],'message'=>['text'=>'ola']],env('FACEBOOK_TOKEN_MESSAGE'));
+//			dd($response);
+//		} catch(\Facebook\Exceptions\FacebookSDKException $e) {
+//			dd($e->getMessage());
+//		}
+//
+//		$users = json_decode($response->getBody());
+//		return view('home',compact('users'));
+//		$userNode = $response->getGraphUser();
+//		printf('Hello, %s!', $userNode->getName());
 
-		$users = json_decode($response->getBody());
-		return view('home',compact('users'));
-		$userNode = $response->getGraphUser();
-		printf('Hello, %s!', $userNode->getName());
 
-
-//			return view('home');
+			return view('home');
 
 //		require (base_path('whatsApi/src/whatsprot.class.php'));
 //		$username = '554299322813';    // Your number with country code, ie: 34123456789
@@ -56,7 +60,7 @@ class ContatosController extends Controller
 //		$w->loginWithPassword('RoNNQhISaulaunaUxG5IGneVzOA=');
 //		$reponse = $w->sendMessage("554299603082","testando com app automatico");
 //		$w->pollMessage();
-	}
+//	}
 //
 //	public function massMessage()
 //	{
@@ -125,7 +129,7 @@ class ContatosController extends Controller
 //
 //		$whats = new WhatsAppController();
 //		$whats->send($message,$number);
-//	}
+	}
 
 	public function get($id)
 	{
@@ -226,6 +230,7 @@ class ContatosController extends Controller
 		try{
 
 			$contato = Contato::find($id);
+			$contato['numero'] = preg_replace('/[^0-9]+/','',$contato['numero']);
 			$contato->update($request->all());
 
 			return $this->_return('success','Contato alterado');
